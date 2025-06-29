@@ -78,8 +78,8 @@ Gaugram/
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/gaugram.git
-cd gaugram
+git clone https://github.com/Jaed69/Gaugram.git
+cd Gaugram
 ```
 
 ### 2. Ejecutar con Docker Compose (Recomendado)
@@ -236,4 +236,4 @@ Este proyecto está bajo la Licencia MIT - ver el archivo `LICENSE` para más de
 
 ## 👨‍💻 Autor
 
-- **Tu nombre** - [@tu-usuario](https://github.com/tu-usuario) 
+- **Jaed69** - [@Jaed69](https://github.com/Jaed69) 
