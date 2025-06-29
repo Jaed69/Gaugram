@@ -1,4 +1,4 @@
-# 📸 Gaugram - Red Social Estilo Instagram
+# 📸 Gaugram - Red Social
 
 ![Gaugram Logo](https://img.shields.io/badge/Gaugram-Social%20Media-ff69b4?style=for-the-badge&logo=instagram)
 ![Status](https://img.shields.io/badge/Status-Completado-success?style=for-the-badge)
@@ -529,6 +529,6 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 **Hecho con ❤️ por [@Jaed69](https://github.com/Jaed69)**
 
-![Gaugram](https://img.shields.io/badge/Gaugram-2024-ff69b4?style=for-the-badge)
+![Gaugram](https://img.shields.io/badge/Gaugram-2025-ff69b4?style=for-the-badge)
 
 </div>
