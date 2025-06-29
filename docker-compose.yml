@@ -4,36 +4,69 @@ version: '3.8'
 services:
   # Servicio de la base de datos MongoDB
   mongo:
-    image: mongo:latest # Usa la imagen oficial de MongoDB
-    container_name: mongo_db
+    image: mongo:7.0
+    container_name: gaugram_mongo
+    restart: unless-stopped
     ports:
-      - "27017:27017" # Mapea el puerto para acceso externo (opcional)
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=gaugram
     volumes:
-      - mongo-data:/data/db # Persiste los datos de la base de datos
+      - mongo-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - gaugram-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/gaugram --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Servicio del Backend (API)
   api:
-    build: ./api # Construye la imagen desde la carpeta 'api'
-    container_name: node_api
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: gaugram_api
+    restart: unless-stopped
     ports:
-      - "3000:3000" # Mapea el puerto de la API al host
+      - "3000:3000"
     environment:
-      # La API se conectará al servicio 'mongo' en el puerto 27017
-      - MONGO_URI=mongodb://mongo:27017/socialdb
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/gaugram
+      - JWT_SECRET=gaugram-super-secret-jwt-key-docker-2025
+      - CORS_ORIGIN=http://localhost:4200
     depends_on:
-      - mongo # No inicies la API hasta que el servicio de mongo esté listo
+      mongo:
+        condition: service_healthy
     volumes:
-        - ./api/src:/usr/src/app/src # Sincroniza el código para desarrollo en vivo
+      - ./api/uploads:/usr/src/app/uploads
+      - ./api/logs:/usr/src/app/logs
+    networks:
+      - gaugram-network
 
   # Servicio del Frontend
   frontend:
-    build: ./frontend # Construye la imagen desde la carpeta 'frontend'
-    container_name: angular_app
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gaugram_frontend
+    restart: unless-stopped
     ports:
-      - "4200:80" # Mapea el puerto 80 (Nginx) al 4200 de tu máquina
+      - "4200:80"
     depends_on:
-      - api # No inicies el frontend hasta que la API esté lista
+      - api
+    networks:
+      - gaugram-network
 
-# Define un volumen nombrado para persistir los datos de MongoDB
+# Redes
+networks:
+  gaugram-network:
+    driver: bridge
+
+# Volúmenes
 volumes:
   mongo-data:
+    driver: local

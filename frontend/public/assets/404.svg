@@ -1,0 +1,5 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#F3F4F6"/>
+  <text x="100" y="100" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#6B7280">404</text>
+  <text x="100" y="130" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Not Found</text>
+</svg>

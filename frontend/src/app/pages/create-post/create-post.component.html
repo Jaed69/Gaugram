@@ -1,0 +1,85 @@
+<div class="create-post-container">
+  <div class="create-post-card">
+    <header class="create-post-header">
+      <button class="btn-back" (click)="onCancel()" aria-label="Volver">
+        <i class="icon-arrow-left"></i>
+      </button>
+      <h1 class="title">Nueva publicación</h1>
+      <button 
+        class="btn-share"
+        [disabled]="!selectedFile || loading"
+        (click)="onSubmit()"
+      >
+        <span *ngIf="loading" class="spinner-small"></span>
+        {{ loading ? 'Compartiendo...' : 'Compartir' }}
+      </button>
+    </header>
+
+    <div class="create-post-content">
+      <!-- Image Upload Section -->
+      <div class="image-section" *ngIf="!imagePreview">
+        <div class="upload-area" (click)="fileInput.click()">
+          <div class="upload-icon">
+            <i class="icon-image"></i>
+          </div>
+          <h3>Arrastra las fotos aquí</h3>
+          <p>o</p>
+          <button class="btn btn-primary">Seleccionar desde la computadora</button>
+        </div>
+        <input 
+          #fileInput
+          id="imageInput"
+          type="file" 
+          accept="image/*" 
+          (change)="onFileSelect($event)"
+          style="display: none"
+        />
+      </div>
+
+      <!-- Preview and Form Section -->
+      <div class="preview-section" *ngIf="imagePreview">
+        <div class="image-preview">
+          <img [src]="imagePreview" alt="Vista previa" class="preview-image" />
+          <button class="btn-remove-image" (click)="removeImage()" aria-label="Eliminar imagen">
+            <i class="icon-x"></i>
+          </button>
+        </div>
+
+        <div class="post-form">
+          <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="caption" class="form-label">Escribe una descripción...</label>
+              <textarea
+                id="caption"
+                formControlName="caption"
+                class="form-textarea"
+                placeholder="Escribe una descripción..."
+                rows="3"
+                maxlength="2200"
+              ></textarea>
+              <div class="character-count">
+                {{ caption?.value?.length || 0 }}/2,200
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="location" class="form-label">Agregar ubicación</label>
+              <input
+                id="location"
+                type="text"
+                formControlName="location"
+                class="form-input"
+                placeholder="¿Dónde fue tomada esta foto?"
+                maxlength="100"
+              />
+            </div>
+
+            <div *ngIf="error" class="error-message">
+              {{ error }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

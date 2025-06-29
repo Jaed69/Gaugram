@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-section">
+      <h1 class="logo">Gaugram</h1>
+      <p class="subtitle">Comparte momentos únicos</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Correo electrónico"
+          class="form-input"
+          [class.invalid]="email?.invalid && email?.touched"
+        />
+        <div *ngIf="email?.invalid && email?.touched" class="error-message">
+          <span *ngIf="email?.errors?.['required']">El correo es requerido</span>
+          <span *ngIf="email?.errors?.['email']">Ingresa un correo válido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Contraseña"
+          class="form-input"
+          [class.invalid]="password?.invalid && password?.touched"
+        />
+        <div *ngIf="password?.invalid && password?.touched" class="error-message">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <div *ngIf="error" class="error-message global-error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+      </button>
+    </form>
+
+    <div class="divider">
+      <span>O</span>
+    </div>
+
+    <div class="register-section">
+      <p>¿No tienes una cuenta? <a routerLink="/register" class="link">Regístrate</a></p>
+    </div>
+  </div>
+</div>

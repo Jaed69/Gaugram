@@ -82,21 +82,88 @@ git clone https://github.com/Jaed69/Gaugram.git
 cd Gaugram
 ```
 
-### 2. Ejecutar con Docker Compose (Recomendado)
+### 2. Ejecutar con Docker Compose
+
+#### Entorno de Producción (Recomendado)
 ```bash
-# Construir y ejecutar todos los servicios
+# Construir y ejecutar todos los servicios en producción
 docker-compose up --build
 
 # Ejecutar en segundo plano
 docker-compose up -d --build
 ```
 
+#### Entorno de Desarrollo (Hot Reload)
+```bash
+# Ejecutar en modo desarrollo con hot reload
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+#### Usando Scripts de Ayuda
+```bash
+# En Linux/Mac
+./docker-scripts.sh dev    # Desarrollo
+./docker-scripts.sh prod   # Producción
+./docker-scripts.sh stop   # Detener servicios
+./docker-scripts.sh clean  # Limpiar contenedores
+
+# En Windows
+docker-scripts.bat dev     # Desarrollo
+docker-scripts.bat prod    # Producción
+docker-scripts.bat stop    # Detener servicios
+docker-scripts.bat clean   # Limpiar contenedores
+```
+
 ### 3. Acceder a la aplicación
 - **Frontend**: http://localhost:4200
 - **API**: http://localhost:3000
-- **MongoDB**: localhost:27017
+- **Base de datos**: mongodb://localhost:27017/gaugram
+- **Health Check API**: http://localhost:3000/api/health
 
-### 4. Detener la aplicación
+### 4. Comandos útiles de Docker
+
+#### Monitoreo y Logs
+```bash
+# Ver logs de todos los servicios
+docker-compose logs -f
+
+# Ver logs de un servicio específico
+docker-compose logs -f api
+docker-compose logs -f frontend
+docker-compose logs -f mongo
+
+# Ver estado de contenedores
+docker-compose ps
+```
+
+#### Acceso a contenedores
+```bash
+# Acceder al contenedor de la API
+docker exec -it gaugram_api sh
+
+# Acceder a MongoDB
+docker exec -it gaugram_mongo mongosh gaugram
+
+# Acceder al contenedor del frontend
+docker exec -it gaugram_frontend sh
+```
+
+#### Mantenimiento
+```bash
+# Crear backup de la base de datos
+docker exec gaugram_mongo mongodump --db gaugram --out /tmp/backup
+
+# Detener todos los servicios
+docker-compose down
+
+# Detener y eliminar volúmenes
+docker-compose down --volumes
+
+# Limpiar sistema Docker
+docker system prune -f
+```
+
+### 5. Detener la aplicación
 ```bash
 docker-compose down
 ```

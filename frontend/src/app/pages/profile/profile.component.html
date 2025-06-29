@@ -1,0 +1,125 @@
+<div class="profile-container" *ngIf="!loading && user">
+  <!-- Profile Header -->
+  <header class="profile-header">
+    <div class="avatar-section">
+      <img 
+        [src]="user.profileImage || 'assets/default-avatar.svg'" 
+        [alt]="user.username"
+        class="profile-avatar"
+      />
+    </div>
+    
+    <div class="profile-info">
+      <div class="profile-actions">
+        <h1 class="username">{{ user.username }}</h1>
+        <div class="action-buttons">
+          <button 
+            *ngIf="isOwnProfile" 
+            class="btn btn-outline"
+            (click)="onEditProfile()"
+          >
+            Editar perfil
+          </button>
+          
+          <button 
+            *ngIf="!isOwnProfile" 
+            class="btn"
+            [class.btn-outline]="isFollowing"
+            [class.btn-primary]="!isFollowing"
+            [disabled]="followLoading"
+            (click)="onFollowToggle()"
+          >
+            <span *ngIf="followLoading" class="spinner-small"></span>
+            {{ isFollowing ? 'Siguiendo' : 'Seguir' }}
+          </button>
+          
+          <button class="btn btn-icon" aria-label="Opciones">
+            <i class="icon-more"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat">
+          <span class="stat-number">{{ user.postsCount }}</span>
+          <span class="stat-label">{{ user.postsCount === 1 ? 'publicación' : 'publicaciones' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ user.followersCount }}</span>
+          <span class="stat-label">{{ user.followersCount === 1 ? 'seguidor' : 'seguidores' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ user.followingCount }}</span>
+          <span class="stat-label">siguiendo</span>
+        </div>
+      </div>
+      
+      <div class="profile-details">
+        <h2 class="full-name" *ngIf="user.fullName">{{ user.fullName }}</h2>
+        <p class="bio" *ngIf="user.bio">{{ user.bio }}</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Posts Grid -->
+  <section class="posts-section">
+    <div class="section-tabs">
+      <button class="tab active">
+        <i class="icon-grid"></i>
+        <span>PUBLICACIONES</span>
+      </button>
+    </div>
+    
+    <!-- Loading state -->
+    <div *ngIf="postsLoading" class="posts-loading">
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- No posts -->
+    <div *ngIf="!postsLoading && posts.length === 0" class="no-posts">
+      <div class="no-posts-icon">
+        <i class="icon-camera"></i>
+      </div>
+      <h3 *ngIf="isOwnProfile">Comparte fotos</h3>
+      <h3 *ngIf="!isOwnProfile">Aún no hay publicaciones</h3>
+      <p *ngIf="isOwnProfile">Cuando compartas fotos, aparecerán en tu perfil.</p>
+      <button *ngIf="isOwnProfile" class="btn btn-primary" routerLink="/create">
+        Compartir tu primera foto
+      </button>
+    </div>
+    
+    <!-- Posts grid -->
+    <div *ngIf="!postsLoading && posts.length > 0" class="posts-grid">
+      <div 
+        *ngFor="let post of posts; trackBy: trackByPostId" 
+        class="post-thumbnail"
+        (click)="onPostClick(post)"
+      >
+        <img 
+          [src]="post.imageUrl" 
+          [alt]="'Post de ' + user.username"
+          class="post-image"
+          loading="lazy"
+        />
+        <div class="post-overlay">
+          <div class="post-stats">
+            <span class="stat">
+              <i class="icon-heart-filled"></i>
+              {{ post.likesCount }}
+            </span>
+            <span class="stat">
+              <i class="icon-comment"></i>
+              {{ post.commentsCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Loading state -->
+<div *ngIf="loading" class="profile-loading">
+  <div class="spinner"></div>
+  <p>Cargando perfil...</p>
+</div>

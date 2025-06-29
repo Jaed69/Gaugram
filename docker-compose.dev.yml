@@ -1,0 +1,73 @@
+# docker-compose.dev.yml
+version: '3.8'
+
+services:
+  # Servicio de la base de datos MongoDB
+  mongo:
+    image: mongo:7.0
+    container_name: gaugram_mongo_dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=gaugram
+    volumes:
+      - mongo-data-dev:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - gaugram-network-dev
+
+  # Servicio del Backend (API) - Desarrollo
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile.dev
+    container_name: gaugram_api_dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/gaugram
+      - JWT_SECRET=gaugram-dev-secret-key
+      - CORS_ORIGIN=http://localhost:4200
+    depends_on:
+      - mongo
+    volumes:
+      - ./api/src:/usr/src/app/src:ro
+      - ./api/uploads:/usr/src/app/uploads
+      - /usr/src/app/node_modules
+    networks:
+      - gaugram-network-dev
+
+  # Servicio del Frontend - Desarrollo
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: gaugram_frontend_dev
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - api
+    volumes:
+      - ./frontend/src:/usr/src/app/src:ro
+      - ./frontend/angular.json:/usr/src/app/angular.json:ro
+      - ./frontend/tsconfig.json:/usr/src/app/tsconfig.json:ro
+      - /usr/src/app/node_modules
+    networks:
+      - gaugram-network-dev
+
+# Redes
+networks:
+  gaugram-network-dev:
+    driver: bridge
+
+# Volúmenes
+volumes:
+  mongo-data-dev:
+    driver: local

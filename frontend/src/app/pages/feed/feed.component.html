@@ -1,0 +1,122 @@
+<div class="feed-container">
+  <!-- Loading spinner for initial load -->
+  <div *ngIf="loading && posts.length === 0" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Cargando posts...</p>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!loading && posts.length === 0" class="empty-state">
+    <i class="icon-camera"></i>
+    <h3>¡Empieza a seguir personas!</h3>
+    <p>Cuando sigas a otros usuarios, sus posts aparecerán aquí</p>
+  </div>
+
+  <!-- Posts list -->
+  <div class="posts-list">
+    <article *ngFor="let post of posts; trackBy: trackByPostId" class="post-card">
+      <!-- Post header -->
+      <header class="post-header">
+        <div class="user-info">
+          <img 
+            [src]="post.userId.profileImage || 'assets/default-avatar.svg'" 
+            [alt]="post.userId.username"
+            class="avatar"
+          />
+          <div class="user-details">
+            <h4 class="username">{{ post.userId.username }}</h4>
+            <span *ngIf="post.location" class="location">{{ post.location }}</span>
+          </div>
+        </div>
+        <button class="options-btn" [attr.aria-label]="'Opciones para el post de ' + post.userId.username">
+          <i class="icon-more-horizontal"></i>
+        </button>
+      </header>
+
+      <!-- Post image -->
+      <div class="post-image-container">
+        <img 
+          [src]="post.imageUrl" 
+          [alt]="'Post de ' + post.userId.username"
+          class="post-image"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Post actions -->
+      <div class="post-actions">
+        <div class="primary-actions">
+          <button 
+            class="action-btn like-btn"
+            [class.liked]="post.isLiked"
+            (click)="onLikePost(post._id)"
+            [attr.aria-label]="post.isLiked ? 'Quitar me gusta' : 'Me gusta'"
+          >
+            <i [class]="post.isLiked ? 'icon-heart-filled' : 'icon-heart'"></i>
+          </button>
+          
+          <button 
+            class="action-btn comment-btn"
+            [routerLink]="['/post', post._id]"
+            aria-label="Comentar"
+          >
+            <i class="icon-message-circle"></i>
+          </button>
+          
+          <button class="action-btn share-btn" aria-label="Compartir">
+            <i class="icon-send"></i>
+          </button>
+        </div>
+        
+        <button class="action-btn bookmark-btn" aria-label="Guardar">
+          <i class="icon-bookmark"></i>
+        </button>
+      </div>
+
+      <!-- Post stats -->
+      <div class="post-stats">
+        <span *ngIf="post.likesCount > 0" class="likes-count">
+          {{ post.likesCount === 1 ? '1 me gusta' : post.likesCount + ' me gusta' }}
+        </span>
+      </div>
+
+      <!-- Post caption -->
+      <div class="post-caption" *ngIf="post.caption">
+        <span class="username">{{ post.userId.username }}</span>
+        <span class="caption-text">{{ post.caption }}</span>
+      </div>
+
+      <!-- Comments preview -->
+      <div class="comments-preview" *ngIf="post.commentsCount > 0">
+        <button 
+          class="view-comments-btn"
+          [routerLink]="['/post', post._id]"
+        >
+          Ver {{ post.commentsCount === 1 ? 'el comentario' : 'los ' + post.commentsCount + ' comentarios' }}
+        </button>
+      </div>
+
+      <!-- Post date -->
+      <time class="post-date" [attr.datetime]="post.createdAt">
+        {{ getTimeAgo(post.createdAt) }}
+      </time>
+    </article>
+  </div>
+
+  <!-- Load more button -->
+  <div class="load-more-section" *ngIf="hasMore && !loading && posts.length > 0">
+    <button class="btn btn-outline load-more-btn" (click)="onLoadMore()">
+      Cargar más posts
+    </button>
+  </div>
+
+  <!-- Load more spinner -->
+  <div *ngIf="loading && posts.length > 0" class="load-more-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- No more posts message -->
+  <div *ngIf="!hasMore && posts.length > 0" class="end-message">
+    <p>¡Has visto todos los posts!</p>
+  </div>
+</div>

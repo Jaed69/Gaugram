@@ -1,0 +1,333 @@
+.feed-container {
+  max-width: 470px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.loading-spinner,
+.load-more-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.load-more-spinner {
+  padding: 20px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #405de6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner p {
+  margin-top: 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.empty-state .icon-camera {
+  font-size: 48px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.load-more-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.load-more-btn {
+  background: transparent;
+  color: #405de6;
+  border: 2px solid #405de6;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #405de6;
+  color: white;
+}
+
+.post-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e0e0e0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.location {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.options-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.options-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.post-image-container {
+  position: relative;
+  width: 100%;
+  max-height: 600px;
+  overflow: hidden;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.primary-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  font-size: 20px;
+  color: #333;
+}
+
+.action-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.like-btn.liked {
+  color: #ed4956;
+}
+
+.like-btn.liked:hover {
+  color: #d73447;
+}
+
+.post-stats {
+  padding: 0 16px 8px;
+}
+
+.likes-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.post-caption {
+  padding: 0 16px 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.post-caption .username {
+  font-weight: 600;
+  color: #333;
+  margin-right: 8px;
+}
+
+.caption-text {
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.comments-preview {
+  padding: 0 16px 8px;
+}
+
+.view-comments-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  padding: 0;
+  text-decoration: none;
+}
+
+.view-comments-btn:hover {
+  color: #333;
+}
+
+.post-date {
+  display: block;
+  padding: 0 16px 12px;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.end-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.end-message p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .feed-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .post-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .post-header {
+    padding: 12px 16px;
+  }
+
+  .post-actions {
+    padding: 12px 16px;
+  }
+
+  .post-stats,
+  .post-caption,
+  .comments-preview {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .post-date {
+    padding: 0 16px 16px;
+  }
+}
+
+/* Icons - These would typically come from an icon font or SVG sprite */
+.action-btn i::before {
+  font-size: 24px;
+}
+
+.icon-heart::before {
+  content: '♡';
+}
+
+.icon-heart-filled::before {
+  content: '♥';
+}
+
+.icon-message-circle::before {
+  content: '💬';
+}
+
+.icon-send::before {
+  content: '📤';
+}
+
+.icon-bookmark::before {
+  content: '🔖';
+}
+
+.icon-more-horizontal::before {
+  content: '⋯';
+}
+
+.icon-camera::before {
+  content: '📷';
+}

@@ -1,28 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Post {
-  _id?: string;
-  content: string;
-  author?: string;
-  createdAt?: Date;
-}
+import { Post, CreatePostRequest, PaginatedResponse } from '../core/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  // La URL apunta a nuestra API. Docker la hará accesible.
-  private apiUrl = 'http://localhost:3000/api/posts';
+  private readonly API_URL = '/api/posts';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.apiUrl);
+  // Obtener feed de posts
+  getFeed(page: number = 1, limit: number = 10): Observable<{ posts: Post[]; pagination: any }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get<{ posts: Post[]; pagination: any }>(`${this.API_URL}/feed`, { params });
   }
 
-  addPost(post: Post): Observable<Post> {
-    return this.http.post<Post>(this.apiUrl, post);
+  // Crear nuevo post
+  createPost(postData: CreatePostRequest): Observable<{ message: string; post: Post }> {
+    return this.http.post<{ message: string; post: Post }>(this.API_URL, postData);
+  }
+
+  // Obtener posts de un usuario específico
+  getUserPosts(username: string, page: number = 1, limit: number = 12): Observable<{ posts: Post[]; pagination: any }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get<{ posts: Post[]; pagination: any }>(`${this.API_URL}/user/${username}`, { params });
+  }
+
+  // Obtener un post específico
+  getPost(postId: string): Observable<{ post: Post; comments: any[] }> {
+    return this.http.get<{ post: Post; comments: any[] }>(`${this.API_URL}/${postId}`);
+  }
+
+  // Dar/quitar like a un post
+  toggleLike(postId: string): Observable<{ message: string; isLiked: boolean; likesCount: number }> {
+    return this.http.post<{ message: string; isLiked: boolean; likesCount: number }>(`${this.API_URL}/${postId}/like`, {});
+  }
+
+  // Eliminar post
+  deletePost(postId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.API_URL}/${postId}`);
+  }
+
+  // Buscar posts por hashtag
+  searchByHashtag(hashtag: string, page: number = 1): Observable<{ posts: Post[]; pagination: any }> {
+    const params = new HttpParams()
+      .set('hashtag', hashtag)
+      .set('page', page.toString());
+
+    return this.http.get<{ posts: Post[]; pagination: any }>(`${this.API_URL}/hashtag`, { params });
   }
 }
