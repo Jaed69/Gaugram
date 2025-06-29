@@ -1,5 +1,4 @@
 # docker-compose.dev.yml
-version: '3.8'
 
 services:
   # Servicio de la base de datos MongoDB

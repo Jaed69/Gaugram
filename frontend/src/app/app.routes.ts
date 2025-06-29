@@ -1,6 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
+import { Routes } from '@angular/router';
 
 // Import components
 import { LoginComponent } from './pages/login/login.component';
@@ -9,7 +7,7 @@ import { FeedComponent } from './pages/feed/feed.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CreatePostComponent } from './pages/create-post/create-post.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   // Public routes
   { 
     path: 'login', 
@@ -22,23 +20,20 @@ const routes: Routes = [
     title: 'Crear Cuenta - Gaugram'
   },
 
-  // Protected routes
+  // Main routes (temporarily removing auth guard for development)
   { 
     path: '', 
     component: FeedComponent, 
-    canActivate: [AuthGuard],
     title: 'Feed - Gaugram'
   },
   { 
     path: 'create', 
     component: CreatePostComponent, 
-    canActivate: [AuthGuard],
     title: 'Nueva Publicación - Gaugram'
   },
   { 
     path: 'profile/:username', 
     component: ProfileComponent, 
-    canActivate: [AuthGuard],
     title: 'Perfil - Gaugram'
   },
 
@@ -53,15 +48,3 @@ const routes: Routes = [
     redirectTo: '/404'
   }
 ];
-
-// Export routes for standalone application
-export { routes };
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    enableTracing: false,
-    scrollPositionRestoration: 'top'
-  })],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

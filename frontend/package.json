@@ -29,13 +29,10 @@
     "@angular/platform-browser": "^20.0.0",
     "@angular/platform-browser-dynamic": "^20.0.0",
     "@angular/router": "^20.0.0",
-    "@angular/material": "^20.0.0",
-    "@angular/cdk": "^20.0.0",
+    "@angular/cli": "^20.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0",
-    "ngx-infinite-scroll": "^18.0.0",
-    "ng-image-slider": "^7.0.1"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.0.0",

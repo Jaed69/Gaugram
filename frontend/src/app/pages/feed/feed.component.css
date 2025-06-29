@@ -1,7 +1,298 @@
+/* Instagram-style Feed Component */
 .feed-container {
   max-width: 470px;
   margin: 0 auto;
   padding: 20px 0;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #8e8e8e;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #405de6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #8e8e8e;
+}
+
+.empty-state .icon-camera::before {
+  content: '📷';
+  font-size: 72px;
+  margin-bottom: 24px;
+  opacity: 0.3;
+  display: block;
+}
+
+.empty-state h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #262626;
+}
+
+.empty-state p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Post Cards */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-card {
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* Post Header */
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dbdbdb;
+}
+
+.user-details h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+}
+
+.location {
+  font-size: 11px;
+  color: #8e8e8e;
+  display: block;
+  margin-top: 2px;
+}
+
+.options-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #262626;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.options-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.icon-more-horizontal::before {
+  content: '⋯';
+  font-size: 16px;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+/* Post Image */
+.post-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+/* Post Actions */
+.post-actions {
+  padding: 6px 16px 8px;
+}
+
+.primary-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  font-size: 20px;
+}
+
+.action-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.like-btn::before {
+  content: '♡';
+  color: #262626;
+}
+
+.like-btn.liked::before {
+  content: '♥';
+  color: #ed4956;
+}
+
+.comment-btn::before {
+  content: '💬';
+  color: #262626;
+}
+
+.share-btn::before {
+  content: '📤';
+  color: #262626;
+}
+
+.bookmark-btn {
+  margin-left: auto;
+}
+
+.bookmark-btn::before {
+  content: '🔖';
+  color: #262626;
+}
+
+.bookmark-btn.saved::before {
+  content: '🔖';
+  color: #262626;
+}
+
+/* Post Content */
+.post-content {
+  padding: 0 16px 16px;
+}
+
+.likes-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 8px;
+}
+
+.caption {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.caption .username {
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.view-comments {
+  color: #8e8e8e;
+  font-size: 14px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.view-comments:hover {
+  color: #262626;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #8e8e8e;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+/* Load More */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.load-more-btn {
+  background: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #0085e6;
+}
+
+.load-more-btn:disabled {
+  background: #b0b0b0;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .feed-container {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .post-card {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    border-bottom: 8px solid #f5f5f5;
+  }
 }
 
 .loading-spinner,

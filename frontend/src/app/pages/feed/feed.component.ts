@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PostService } from '../../services/post';
 import { AuthService } from '../../core/services/auth.service';
 import { Post, User } from '../../core/models';
 
 @Component({
   selector: 'app-feed',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.css']
 })
@@ -22,8 +26,104 @@ export class FeedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Para demostración, cargar datos de prueba inmediatamente
+    this.loadMockData();
+    
+    // También intentar cargar datos reales si hay autenticación
     this.currentUser = this.authService.getCurrentUser();
-    this.loadPosts();
+    if (this.currentUser) {
+      this.loadPosts();
+    }
+  }
+
+  loadMockData() {
+    // Datos de prueba que se ven como Instagram
+    this.posts = [
+      {
+        _id: '1',
+        userId: {
+          id: 'user1',
+          username: 'nature_lover',
+          email: 'nature@example.com',
+          fullName: 'Ana García',
+          bio: 'Amante de la naturaleza 🌿',
+          profileImage: 'https://images.unsplash.com/photo-1494790108755-2616b612b732?w=150&h=150&fit=crop&crop=face',
+          isVerified: false,
+          isPrivate: false,
+          followersCount: 1204,
+          followingCount: 892,
+          postsCount: 45,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=600&fit=crop',
+        caption: 'Increíble atardecer en las montañas 🏔️ #naturaleza #aventura #hiking',
+        hashtags: ['naturaleza', 'aventura', 'hiking'],
+        location: 'Parque Nacional Ordesa',
+        likesCount: 234,
+        commentsCount: 12,
+        isLiked: false,
+        isActive: true,
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      },
+      {
+        _id: '2',
+        userId: {
+          id: 'user2',
+          username: 'foodie_madrid',
+          email: 'foodie@example.com',
+          fullName: 'Carlos Ruiz',
+          bio: 'Chef & Food Blogger 👨‍🍳',
+          profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+          isVerified: true,
+          isPrivate: false,
+          followersCount: 5420,
+          followingCount: 321,
+          postsCount: 128,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=600&fit=crop',
+        caption: 'Nueva receta en el blog! 🍕 Pizza casera con masa madre. El secreto está en los ingredientes frescos y mucho amor ❤️',
+        hashtags: ['pizza', 'comida', 'recetas', 'casero'],
+        location: 'Madrid, España',
+        likesCount: 892,
+        commentsCount: 45,
+        isLiked: true,
+        isActive: true,
+        createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      },
+      {
+        _id: '3',
+        userId: {
+          id: 'user3',
+          username: 'travel_diary',
+          email: 'travel@example.com',
+          fullName: 'María López',
+          bio: 'Explorando el mundo 🌍 ✈️',
+          profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+          isVerified: false,
+          isPrivate: false,
+          followersCount: 2156,
+          followingCount: 1543,
+          postsCount: 87,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop',
+        caption: 'Santorini nunca deja de sorprenderme 💙 Cada rincón es una postal perfecta',
+        hashtags: ['santorini', 'grecia', 'viajes', 'mar'],
+        location: 'Santorini, Grecia',
+        likesCount: 1543,
+        commentsCount: 78,
+        isLiked: false,
+        isActive: true,
+        createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      }
+    ];
   }
 
   loadPosts(loadMore = false) {
@@ -59,16 +159,25 @@ export class FeedComponent implements OnInit {
   }
 
   onLikePost(postId: string) {
+    // Toggle like status for demo
     const post = this.posts.find(p => p._id === postId);
-    if (!post) return;
+    if (post) {
+      post.isLiked = !post.isLiked;
+      post.likesCount += post.isLiked ? 1 : -1;
+    }
+    
+    // In real app, call API
+    // this.postService.toggleLike(postId).subscribe(...)
+  }
 
-    this.postService.toggleLike(postId).subscribe({
-      next: (response) => {
-        post.isLiked = response.isLiked;
-        post.likesCount = response.likesCount;
-      },
-      error: (error: any) => console.error('Error toggling like:', error)
-    });
+  onSharePost(postId: string) {
+    // Share functionality
+    console.log('Sharing post:', postId);
+  }
+
+  onSavePost(postId: string) {
+    // Save/bookmark functionality
+    console.log('Saving post:', postId);
   }
 
   onRefresh() {

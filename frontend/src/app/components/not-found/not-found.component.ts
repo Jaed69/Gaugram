@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-not-found',
+  standalone: true,
   template: `
     <div class="not-found-container">
       <div class="not-found-content">
@@ -116,8 +117,7 @@ import { Router } from '@angular/router';
         width: 200px;
       }
     }
-  `],
-  standalone: true
+  `]
 })
 export class NotFoundComponent {
   constructor(private router: Router) {}

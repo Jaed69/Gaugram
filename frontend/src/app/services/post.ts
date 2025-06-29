@@ -3,6 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post, CreatePostRequest, PaginatedResponse } from '../core/models';
 
+// Re-export Post for components that import from this service
+export type { Post } from '../core/models';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,6 +50,16 @@ export class PostService {
   // Eliminar post
   deletePost(postId: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.API_URL}/${postId}`);
+  }
+
+  // Obtener todos los posts (para app.component.ts compatibility)
+  getPosts(page: number = 1, limit: number = 10): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.API_URL}?page=${page}&limit=${limit}`);
+  }
+
+  // Agregar post (para app.component.ts compatibility)
+  addPost(post: CreatePostRequest): Observable<{ message: string; post: Post }> {
+    return this.createPost(post);
   }
 
   // Buscar posts por hashtag

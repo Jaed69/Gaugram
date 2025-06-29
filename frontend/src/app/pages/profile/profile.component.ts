@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
 import { PostService } from '../../services/post';
 import { AuthService } from '../../core/services/auth.service';
@@ -7,6 +8,8 @@ import { User, Post } from '../../core/models';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })

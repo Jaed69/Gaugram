@@ -51,26 +51,26 @@
             [class.liked]="post.isLiked"
             (click)="onLikePost(post._id)"
             [attr.aria-label]="post.isLiked ? 'Quitar me gusta' : 'Me gusta'"
-          >
-            <i [class]="post.isLiked ? 'icon-heart-filled' : 'icon-heart'"></i>
-          </button>
+          ></button>
           
           <button 
             class="action-btn comment-btn"
             [routerLink]="['/post', post._id]"
             aria-label="Comentar"
-          >
-            <i class="icon-message-circle"></i>
-          </button>
+          ></button>
           
-          <button class="action-btn share-btn" aria-label="Compartir">
-            <i class="icon-send"></i>
-          </button>
+          <button 
+            class="action-btn share-btn" 
+            (click)="onSharePost(post._id)"
+            aria-label="Compartir"
+          ></button>
         </div>
         
-        <button class="action-btn bookmark-btn" aria-label="Guardar">
-          <i class="icon-bookmark"></i>
-        </button>
+        <button 
+          class="action-btn bookmark-btn" 
+          (click)="onSavePost(post._id)"
+          aria-label="Guardar"
+        ></button>
       </div>
 
       <!-- Post stats -->

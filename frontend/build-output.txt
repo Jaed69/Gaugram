@@ -1,0 +1,5 @@
+
+> frontend@0.0.0 build
+> ng build
+
+Error: Could not find the '@angular-devkit/build-angular:browser' builder's node package.

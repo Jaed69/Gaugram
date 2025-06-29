@@ -1,59 +1,97 @@
-<div class="login-container">
-  <div class="login-card">
-    <div class="logo-section">
-      <h1 class="logo">Gaugram</h1>
-      <p class="subtitle">Comparte momentos únicos</p>
-    </div>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="Correo electrónico"
-          class="form-input"
-          [class.invalid]="email?.invalid && email?.touched"
-        />
-        <div *ngIf="email?.invalid && email?.touched" class="error-message">
-          <span *ngIf="email?.errors?.['required']">El correo es requerido</span>
-          <span *ngIf="email?.errors?.['email']">Ingresa un correo válido</span>
+<div class="auth-container">
+  <div class="auth-content">
+    <!-- Phone mockup section (like Instagram) -->
+    <div class="phone-mockup">
+      <div class="phone-frame">
+        <div class="screen-content">
+          <div class="demo-post">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" alt="Demo post">
+          </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="Contraseña"
-          class="form-input"
-          [class.invalid]="password?.invalid && password?.touched"
-        />
-        <div *ngIf="password?.invalid && password?.touched" class="error-message">
-          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
-          <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
-        </div>
-      </div>
-
-      <div *ngIf="error" class="error-message global-error">
-        {{ error }}
-      </div>
-
-      <button
-        type="submit"
-        class="login-button"
-        [disabled]="loginForm.invalid || loading"
-      >
-        <span *ngIf="loading" class="spinner"></span>
-        {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
-      </button>
-    </form>
-
-    <div class="divider">
-      <span>O</span>
     </div>
 
-    <div class="register-section">
-      <p>¿No tienes una cuenta? <a routerLink="/register" class="link">Regístrate</a></p>
+    <!-- Login form section -->
+    <div class="auth-forms">
+      <div class="auth-card">
+        <div class="logo-section">
+          <h1 class="logo">Gaugram</h1>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <div class="form-group">
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Teléfono, usuario o correo electrónico"
+              class="form-input"
+              [class.error]="email?.invalid && email?.touched"
+            />
+            <div *ngIf="email?.invalid && email?.touched" class="error-message">
+              <span *ngIf="email?.errors?.['required']">Este campo es obligatorio</span>
+              <span *ngIf="email?.errors?.['email']">Ingresa un correo electrónico válido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Contraseña"
+              class="form-input"
+              [class.error]="password?.invalid && password?.touched"
+            />
+            <div *ngIf="password?.invalid && password?.touched" class="error-message">
+              <span *ngIf="password?.errors?.['required']">Este campo es obligatorio</span>
+              <span *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="error-message global-error">
+            {{ error }}
+          </div>
+
+          <button
+            type="submit"
+            class="auth-button primary"
+            [disabled]="loginForm.invalid || loading"
+          >
+            <span *ngIf="loading" class="loading-spinner"></span>
+            {{ loading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+          </button>
+        </form>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">O</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <button class="auth-button facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          Iniciar sesión con Facebook
+        </button>
+
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <div class="auth-card signup-card">
+        <p>¿No tienes una cuenta? <a routerLink="/register" class="signup-link">Regístrate</a></p>
+      </div>
+
+      <div class="app-download">
+        <p>Obtén la aplicación.</p>
+        <div class="download-buttons">
+          <a href="#" class="download-btn">
+            <img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" alt="Descargar en App Store">
+          </a>
+          <a href="#" class="download-btn">
+            <img src="https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png" alt="Disponible en Google Play">
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

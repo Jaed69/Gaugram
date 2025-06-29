@@ -1,306 +1,534 @@
-# Gaugram - Red Social
+# 📸 Gaugram - Red Social Estilo Instagram
 
-Una aplicación de red social moderna construida con Angular (frontend) y Node.js/Express (backend) con MongoDB como base de datos, totalmente containerizada con Docker.
+![Gaugram Logo](https://img.shields.io/badge/Gaugram-Social%20Media-ff69b4?style=for-the-badge&logo=instagram)
+![Status](https://img.shields.io/badge/Status-Completado-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
+![Angular](https://img.shields.io/badge/Angular-20.0.0-DD0031?style=for-the-badge&logo=angular)
+![Node.js](https://img.shields.io/badge/Node.js-22.17.0-339933?style=for-the-badge&logo=node.js)
 
-## 🏗️ Estructura del Proyecto
+## 🌟 Descripción
 
+**Gaugram** es una aplicación web de red social moderna que replica la experiencia de Instagram. Desarrollada con tecnologías de vanguardia, ofrece una interfaz elegante y funcionalidades completas para compartir momentos, interactuar con otros usuarios y crear una comunidad vibrante.
+
+### ✨ Características Principales
+
+- 🎨 **UI/UX Tipo Instagram**: Diseño moderno y responsivo idéntico a Instagram
+- 📱 **Responsive Design**: Optimizado para dispositivos móviles y desktop
+- 🔐 **Autenticación Segura**: Sistema JWT con guards y interceptors
+- 📸 **Feed Interactivo**: Posts con likes, comentarios y compartir
+- 👤 **Perfiles de Usuario**: Gestión completa de perfiles y seguidores
+- 🔍 **Búsqueda Avanzada**: Buscar usuarios y contenido
+- 🌙 **Navegación Moderna**: Header y bottom navigation como Instagram
+- ⚡ **Tiempo Real**: Actualizaciones inmediatas de interacciones
+- 🐳 **Dockerizado**: Fácil despliegue con Docker Compose
+
+## 🛠️ Stack Tecnológico Completo
+
+### 🎯 Frontend
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| **Angular** | `20.0.0` | Framework principal con componentes standalone |
+| **TypeScript** | `5.8.2` | Lenguaje de programación tipado |
+| **RxJS** | `7.8.0` | Programación reactiva y observables |
+| **Angular CLI** | `20.0.0` | Herramientas de desarrollo |
+| **Zone.js** | `0.15.0` | Detección de cambios automática |
+
+#### 📦 Dependencias Frontend
+```json
+{
+  "@angular/animations": "^20.0.0",
+  "@angular/common": "^20.0.0",
+  "@angular/compiler": "^20.0.0",
+  "@angular/core": "^20.0.0",
+  "@angular/forms": "^20.0.0",
+  "@angular/platform-browser": "^20.0.0",
+  "@angular/platform-browser-dynamic": "^20.0.0",
+  "@angular/router": "^20.0.0",
+  "@angular/cli": "^20.0.0",
+  "rxjs": "~7.8.0",
+  "tslib": "^2.3.0",
+  "zone.js": "~0.15.0"
+}
 ```
-Gaugram/
-├── api/                    # Backend (Node.js + Express + MongoDB)
-│   ├── src/
-│   │   ├── index.js       # Servidor principal
-│   │   └── models/
-│   │       └── Post.js    # Modelo de datos para posts
-│   ├── Dockerfile         # Configuración Docker para API
-│   ├── package.json       # Dependencias del backend
-│   └── package-lock.json
-├── frontend/               # Frontend (Angular)
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── services/
-│   │   │   │   └── post.ts # Servicio HTTP para API
-│   │   │   ├── app.component.ts
-│   │   │   ├── app.component.html
-│   │   │   └── app.component.css
-│   │   ├── index.html
-│   │   ├── main.ts
-│   │   └── styles.css
-│   ├── Dockerfile         # Configuración Docker para Frontend
-│   ├── nginx.conf         # Configuración del servidor web
-│   ├── angular.json       # Configuración de Angular
-│   ├── package.json       # Dependencias del frontend
-│   └── package-lock.json
-├── docker-compose.yml     # Orquestación de contenedores
-├── .gitignore            # Archivos a ignorar en Git
-└── README.md             # Este archivo
+
+#### 🔧 DevDependencies Frontend
+```json
+{
+  "@angular-devkit/build-angular": "^20.0.0",
+  "@angular/compiler-cli": "^20.0.0",
+  "@types/jasmine": "~5.1.0",
+  "@types/node": "^20.17.19",
+  "jasmine-core": "~5.7.0",
+  "karma": "~6.4.0",
+  "karma-chrome-launcher": "~3.2.0",
+  "karma-coverage": "~2.2.0",
+  "karma-jasmine": "~5.1.0",
+  "karma-jasmine-html-reporter": "~2.1.0",
+  "typescript": "~5.8.2"
+}
 ```
 
-## 🚀 Tecnologías y Versiones
+### ⚡ Backend
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| **Node.js** | `22.17.0` | Runtime de JavaScript |
+| **Express** | `4.18.2` | Framework web minimalista |
+| **MongoDB** | `8.16.0` | Base de datos NoSQL |
+| **Mongoose** | `8.16.0` | ODM para MongoDB |
+| **JWT** | `9.0.2` | Autenticación por tokens |
+| **bcryptjs** | `2.4.3` | Encriptación de contraseñas |
 
-### **Frontend - Angular 20.0.0**
-- **Framework**: Angular 20.0.0
-- **Lenguaje**: TypeScript 5.8.2
-- **HTTP Client**: RxJS 7.8.0
-- **Herramientas de desarrollo**:
-  - Angular CLI 20.0.0
-  - Angular DevKit Build Angular 20.0.0
-  - Karma 6.4.0 (testing)
-  - Jasmine 5.7.0 (testing)
+#### 📦 Dependencias Backend
+```json
+{
+  "bcryptjs": "^2.4.3",
+  "cors": "^2.8.5",
+  "dotenv": "^16.3.1",
+  "express": "^4.18.2",
+  "jsonwebtoken": "^9.0.2",
+  "mongoose": "^8.16.0",
+  "multer": "^1.4.5-lts.1",
+  "cloudinary": "^1.41.3",
+  "express-rate-limit": "^6.10.0",
+  "helmet": "^7.1.0",
+  "express-validator": "^6.15.0"
+}
+```
 
-### **Backend - Node.js**
-- **Runtime**: Node.js
-- **Framework web**: Express 5.1.0
-- **Base de datos**: MongoDB con Mongoose 8.16.0
-- **CORS**: cors 2.8.5
-- **Herramientas de desarrolllo**:
-  - Nodemon 3.0.0 (auto-reload)
+#### 🔧 DevDependencies Backend
+```json
+{
+  "nodemon": "^3.0.0"
+}
+```
 
-### **Base de Datos**
-- **MongoDB**: Latest (mediante Docker)
-- **ODM**: Mongoose 8.16.0
+### 🐳 Infraestructura
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| **Docker** | `latest` | Containerización |
+| **Docker Compose** | `v2` | Orquestación de contenedores |
+| **MongoDB** | `7.0` | Base de datos en contenedor |
+| **Node Alpine** | `22-alpine` | Imagen base ligera |
 
-### **Containerización**
-- **Docker**: Para containerización
-- **Docker Compose**: version 3.8
-- **Nginx**: Para servir el frontend en producción
+## 🚀 Instalación y Configuración
 
-### **Servidor Web**
-- **Nginx**: Para servir archivos estáticos del frontend
-- **Puerto**: 4200 (mapeado desde puerto 80 del contenedor)
+### 📋 Prerrequisitos
 
-## 📋 Requisitos Previos
+- **Node.js** ≥ 22.17.0
+- **npm** ≥ 10.0.0
+- **Docker** ≥ 24.0.0
+- **Docker Compose** ≥ 2.0.0
+- **Git** ≥ 2.40.0
 
-- **Docker**: versión 20.10+
-- **Docker Compose**: versión 1.29+
-- **Git**: para clonar el repositorio
+### 🔧 Instalación
 
-## 🚀 Instalación y Ejecución
-
-### 1. Clonar el repositorio
+1. **Clonar el repositorio**
 ```bash
 git clone https://github.com/Jaed69/Gaugram.git
 cd Gaugram
 ```
 
-### 2. Ejecutar con Docker Compose
-
-#### Entorno de Producción (Recomendado)
-```bash
-# Construir y ejecutar todos los servicios en producción
-docker-compose up --build
-
-# Ejecutar en segundo plano
-docker-compose up -d --build
+2. **Verificar estructura del proyecto**
+```
+Gaugram/
+├── api/                    # Backend (Node.js + Express)
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── index.js
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   └── package.json
+├── frontend/               # Frontend (Angular 20)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── services/
+│   │   │   └── core/
+│   │   ├── assets/
+│   │   └── index.html
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   ├── angular.json
+│   └── package.json
+├── docker-compose.yml      # Producción
+├── docker-compose.dev.yml  # Desarrollo
+└── README.md
 ```
 
-#### Entorno de Desarrollo (Hot Reload)
+### 🚀 Desarrollo (Recomendado)
+
+**Opción 1: Con Docker (Recomendado)**
 ```bash
-# Ejecutar en modo desarrollo con hot reload
+# Iniciar todos los servicios en desarrollo
 docker-compose -f docker-compose.dev.yml up --build
+
+# Ver logs en tiempo real
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Detener servicios
+docker-compose -f docker-compose.dev.yml down
 ```
 
-#### Usando Scripts de Ayuda
+**Opción 2: Instalación Local**
 ```bash
-# En Linux/Mac
-./docker-scripts.sh dev    # Desarrollo
-./docker-scripts.sh prod   # Producción
-./docker-scripts.sh stop   # Detener servicios
-./docker-scripts.sh clean  # Limpiar contenedores
-
-# En Windows
-docker-scripts.bat dev     # Desarrollo
-docker-scripts.bat prod    # Producción
-docker-scripts.bat stop    # Detener servicios
-docker-scripts.bat clean   # Limpiar contenedores
-```
-
-### 3. Acceder a la aplicación
-- **Frontend**: http://localhost:4200
-- **API**: http://localhost:3000
-- **Base de datos**: mongodb://localhost:27017/gaugram
-- **Health Check API**: http://localhost:3000/api/health
-
-### 4. Comandos útiles de Docker
-
-#### Monitoreo y Logs
-```bash
-# Ver logs de todos los servicios
-docker-compose logs -f
-
-# Ver logs de un servicio específico
-docker-compose logs -f api
-docker-compose logs -f frontend
-docker-compose logs -f mongo
-
-# Ver estado de contenedores
-docker-compose ps
-```
-
-#### Acceso a contenedores
-```bash
-# Acceder al contenedor de la API
-docker exec -it gaugram_api sh
-
-# Acceder a MongoDB
-docker exec -it gaugram_mongo mongosh gaugram
-
-# Acceder al contenedor del frontend
-docker exec -it gaugram_frontend sh
-```
-
-#### Mantenimiento
-```bash
-# Crear backup de la base de datos
-docker exec gaugram_mongo mongodump --db gaugram --out /tmp/backup
-
-# Detener todos los servicios
-docker-compose down
-
-# Detener y eliminar volúmenes
-docker-compose down --volumes
-
-# Limpiar sistema Docker
-docker system prune -f
-```
-
-### 5. Detener la aplicación
-```bash
-docker-compose down
-```
-
-## 🛠️ Desarrollo Local (Sin Docker)
-
-### Backend
-```bash
+# Backend
 cd api
 npm install
-npm run dev    # Usar nodemon para auto-reload
-# o
-npm start      # Usar node directamente
-```
+npm run dev
 
-### Frontend
-```bash
+# Frontend (nueva terminal)
 cd frontend
 npm install
-npm start      # ng serve
-# o
-npm run build  # ng build para producción
+npm start
 ```
 
-## 📡 API Endpoints
+### 🏭 Producción
 
-| Método | Endpoint      | Descripción              |
-|--------|---------------|--------------------------|
-| GET    | /api/posts    | Obtener todos los posts  |
-| POST   | /api/posts    | Crear un nuevo post      |
-
-### Ejemplo de uso de la API:
-
-**Crear un post:**
 ```bash
-curl -X POST http://localhost:3000/api/posts \
-  -H "Content-Type: application/json" \
-  -d '{"content": "Mi primer post!", "author": "Usuario"}'
+# Construir y ejecutar en producción
+docker-compose up --build -d
+
+# Ver estado de servicios
+docker-compose ps
+
+# Ver logs
+docker-compose logs -f
 ```
 
-**Obtener todos los posts:**
-```bash
-curl http://localhost:3000/api/posts
+## 🌐 URLs de Acceso
+
+| Servicio | URL | Descripción |
+|----------|-----|-------------|
+| **Frontend** | http://localhost:4200 | Aplicación web principal |
+| **Backend API** | http://localhost:3000 | API REST |
+| **MongoDB** | mongodb://localhost:27017 | Base de datos |
+
+## 📱 Funcionalidades Implementadas
+
+### 🎨 Frontend (Angular 20)
+- ✅ **Componentes Standalone**: Arquitectura moderna de Angular 20
+- ✅ **Feed Interactivo**: Posts con like, comentarios, compartir
+- ✅ **Autenticación**: Login/Register con validación en tiempo real
+- ✅ **Navegación**: Header con búsqueda y bottom navigation
+- ✅ **Perfiles**: Gestión completa de perfiles de usuario
+- ✅ **Responsive**: Diseño adaptativo para móvil y desktop
+- ✅ **Guards**: Protección de rutas con authentication guards
+- ✅ **Interceptors**: Manejo automático de tokens JWT
+- ✅ **Lazy Loading**: Carga diferida de componentes
+
+### ⚡ Backend (Node.js + Express)
+- ✅ **API RESTful**: Endpoints completos para todas las funcionalidades
+- ✅ **Autenticación JWT**: Tokens seguros con refresh tokens
+- ✅ **Middlewares**: Rate limiting, CORS, Helmet para seguridad
+- ✅ **Validación**: Express-validator para datos de entrada
+- ✅ **Upload de imágenes**: Multer + Cloudinary para gestión de medios
+- ✅ **Encriptación**: bcryptjs para contraseñas seguras
+- ✅ **Base de datos**: MongoDB con Mongoose ODM
+
+### 🗄️ Base de Datos (MongoDB)
+- ✅ **Modelos**: User, Post, Comment, Like
+- ✅ **Relaciones**: Referencias entre documentos
+- ✅ **Índices**: Optimización de consultas
+- ✅ **Validaciones**: Esquemas con validación de datos
+
+## 📖 Documentación de API
+
+### 🔐 Autenticación
+```http
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/refresh
+GET  /api/auth/me
 ```
 
-## ✨ Funcionalidades
-
-- ✅ Crear posts de texto
-- ✅ Ver todos los posts en tiempo real
-- ✅ Interfaz responsive y moderna
-- ✅ Persistencia de datos con MongoDB
-- ✅ Arquitectura containerizada
-- ✅ API RESTful
-- ✅ Separación clara frontend/backend
-- ✅ Configuración lista para producción
-
-## 🐳 Contenedores Docker
-
-### Servicios configurados:
-1. **MongoDB** (`mongo:latest`)
-   - Puerto: 27017
-   - Volumen persistente: `mongo-data`
-
-2. **API Backend** (Node.js + Express)
-   - Puerto: 3000
-   - Variables de entorno: `MONGO_URI=mongodb://mongo:27017/socialdb`
-
-3. **Frontend** (Angular + Nginx)
-   - Puerto: 4200 (mapeado desde 80)
-   - Servido por Nginx para mejor rendimiento
-
-## 🔧 Scripts Disponibles
-
-### Backend (api/)
-```bash
-npm start      # Ejecutar servidor
-npm run dev    # Ejecutar con nodemon (auto-reload)
-npm test       # Ejecutar tests (configurar)
+### 👤 Usuarios
+```http
+GET    /api/users
+GET    /api/users/:id
+PUT    /api/users/:id
+DELETE /api/users/:id
+POST   /api/users/:id/follow
+DELETE /api/users/:id/unfollow
 ```
 
-### Frontend (frontend/)
-```bash
-npm start      # ng serve - servidor de desarrollo
-npm run build  # ng build - compilar para producción
-npm test       # ng test - ejecutar tests unitarios
-npm run watch  # ng build --watch - compilar en modo watch
+### 📸 Posts
+```http
+GET    /api/posts/feed
+GET    /api/posts/:id
+POST   /api/posts
+PUT    /api/posts/:id
+DELETE /api/posts/:id
+POST   /api/posts/:id/like
+DELETE /api/posts/:id/unlike
 ```
 
-## 📊 Modelo de Datos
+### 💬 Comentarios
+```http
+GET    /api/comments/post/:postId
+POST   /api/comments
+PUT    /api/comments/:id
+DELETE /api/comments/:id
+```
 
-### Post
-```javascript
+### 📄 Ejemplo de Respuesta
+```json
 {
-  _id: ObjectId,          // MongoDB ObjectId
-  content: String,        // Contenido del post
-  author: String,         // Autor del post (opcional)
-  createdAt: Date         // Fecha de creación
+  "success": true,
+  "data": {
+    "user": {
+      "id": "507f1f77bcf86cd799439011",
+      "username": "johndoe",
+      "email": "john@example.com",
+      "fullName": "John Doe",
+      "profileImage": "https://example.com/avatar.jpg",
+      "followersCount": 150,
+      "followingCount": 89,
+      "postsCount": 42
+    }
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-## 🔗 Variables de Entorno
+## 🔧 Configuración Avanzada
 
-### Backend
-- `MONGO_URI`: URI de conexión a MongoDB (default: `mongodb://mongo:27017/socialdb`)
-- `PORT`: Puerto del servidor (default: 3000)
+### 🔐 Variables de Entorno
 
-### Frontend
-- La URL de la API está configurada en `src/app/services/post.ts`
+**Backend (.env)**
+```env
+NODE_ENV=development
+PORT=3000
+MONGO_URI=mongodb://mongo:27017/gaugram
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=7d
+CLOUDINARY_CLOUD_NAME=your-cloudinary-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CORS_ORIGIN=http://localhost:4200
+```
 
-## 🚦 Estados de los Puertos
+**Frontend (environment.ts)**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api',
+  socketUrl: 'http://localhost:3000'
+};
+```
 
-| Servicio | Puerto Host | Puerto Contenedor | Descripción |
-|----------|-------------|-------------------|-------------|
-| Frontend | 4200        | 80                | Aplicación Angular |
-| API      | 3000        | 3000              | Backend Express |
-| MongoDB  | 27017       | 27017             | Base de datos |
+### 🐳 Docker Compose Configuración
 
-## 📝 Notas Importantes
+**Desarrollo (docker-compose.dev.yml)**
+```yaml
+services:
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+  
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api/src:/usr/src/app/src:ro
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend/src:/usr/src/app/src:ro
+```
 
-- La aplicación está completamente dockerizada para facilitar el despliegue
-- Los datos de MongoDB se persisten en un volumen de Docker named `mongo-data`
-- El frontend se sirve a través de Nginx para mejor rendimiento en producción
-- Las dependencias están definidas en los archivos `package.json` respectivos
-- Se incluye `.gitignore` para evitar subir `node_modules` y archivos temporales
+## 🛠️ Comandos Útiles
 
-## 🤝 Contribución
+### 🐳 Docker
+```bash
+# Reconstruir servicios específicos
+docker-compose -f docker-compose.dev.yml up --build frontend
+docker-compose -f docker-compose.dev.yml up --build api
 
+# Ver logs de servicio específico
+docker-compose -f docker-compose.dev.yml logs -f frontend
+docker-compose -f docker-compose.dev.yml logs -f api
+
+# Ejecutar comandos dentro de contenedores
+docker exec -it gaugram_api_dev npm install
+docker exec -it gaugram_frontend_dev ng generate component example
+```
+
+### 🔍 Debugging
+```bash
+# Verificar estado de contenedores
+docker-compose -f docker-compose.dev.yml ps
+
+# Inspeccionar redes
+docker network ls
+docker network inspect gaugram_gaugram-network-dev
+
+# Limpiar contenedores y volúmenes
+docker-compose -f docker-compose.dev.yml down --volumes
+docker system prune -a
+```
+
+## 🧪 Testing
+
+### 🔬 Backend Testing
+```bash
+cd api
+npm test
+npm run test:coverage
+```
+
+### 🧪 Frontend Testing
+```bash
+cd frontend
+npm test
+npm run test:watch
+npm run e2e
+```
+
+## 🚀 Despliegue
+
+### 🌐 Producción con Docker
+```bash
+# Construir para producción
+docker-compose build
+
+# Ejecutar en producción
+docker-compose up -d
+
+# Verificar servicios
+docker-compose ps
+```
+
+### ☁️ Despliegue en la Nube
+- **Frontend**: Vercel, Netlify, Firebase Hosting
+- **Backend**: Railway, Render, DigitalOcean
+- **Base de datos**: MongoDB Atlas, Railway PostgreSQL
+
+## 🔧 Solución de Problemas
+
+### ❌ Problemas Comunes
+
+**Error: EADDRINUSE :::4200**
+```bash
+# Liberar puerto 4200
+npx kill-port 4200
+# o cambiar puerto en angular.json
+ng serve --port 4201
+```
+
+**Error: Cannot connect to MongoDB**
+```bash
+# Verificar que MongoDB esté ejecutándose
+docker-compose -f docker-compose.dev.yml logs mongo
+# Reiniciar servicio de MongoDB
+docker-compose -f docker-compose.dev.yml restart mongo
+```
+
+**Error: Module not found**
+```bash
+# Limpiar node_modules y reinstalar
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Error de compilación Angular**
+```bash
+# Limpiar caché de Angular
+ng cache clean
+# Reconstruir proyecto
+ng build --configuration development
+```
+
+### 🐛 Logs Útiles
+```bash
+# Ver todos los logs
+docker-compose -f docker-compose.dev.yml logs
+
+# Logs específicos con filtro
+docker-compose -f docker-compose.dev.yml logs frontend | grep ERROR
+docker-compose -f docker-compose.dev.yml logs api | grep "listening"
+```
+
+## 📈 Rendimiento y Optimización
+
+### ⚡ Frontend
+- **Lazy Loading**: Módulos cargados bajo demanda
+- **OnPush Strategy**: Optimización de detección de cambios
+- **Bundle Optimization**: Tree shaking y code splitting
+- **Image Optimization**: Lazy loading de imágenes
+
+### 🚀 Backend
+- **Rate Limiting**: 100 requests/15min por IP
+- **Compression**: Gzip habilitado
+- **Helmet**: Headers de seguridad
+- **MongoDB Indices**: Consultas optimizadas
+
+## 🎯 Próximas Funcionalidades
+
+- [ ] 📱 **Stories**: Historias temporales
+- [ ] 💬 **Chat en tiempo real**: Mensajes directos
+- [ ] 🔔 **Notificaciones push**: Avisos en tiempo real
+- [ ] 🌍 **Geolocalización**: Posts con ubicación
+- [ ] 🎥 **Videos**: Soporte para contenido multimedia
+- [ ] 🔍 **Búsqueda avanzada**: Filtros y hashtags
+- [ ] 📊 **Analytics**: Estadísticas de posts
+- [ ] 🎨 **Temas**: Modo oscuro/claro
+
+## 👥 Contribuir
+
+### 🤝 Cómo Contribuir
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
 3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
+### 📝 Estándares de Código
+- **Angular**: Seguir Angular Style Guide
+- **TypeScript**: Strict mode habilitado
+- **Prettier**: Formateo automático de código
+- **ESLint**: Linting para JavaScript/TypeScript
+
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
 ## 👨‍💻 Autor
 
-- **Jaed69** - [@Jaed69](https://github.com/Jaed69) 
+**Tu Nombre**
+- GitHub: [@Jaed69](https://github.com/Jaed69)
+- LinkedIn: [Tu LinkedIn](https://linkedin.com/in/tu-perfil)
+- Email: tu.email@ejemplo.com
+
+## 🙏 Agradecimientos
+
+- **Angular Team** por el excelente framework
+- **Express.js** por la simplicidad del backend
+- **MongoDB** por la flexibilidad de la base de datos
+- **Docker** por facilitar el despliegue
+- **Instagram** por la inspiración del diseño
+
+---
+
+<div align="center">
+
+### ⭐ Si te gusta este proyecto, ¡dale una estrella!
+
+**Hecho con ❤️ por [@Jaed69](https://github.com/Jaed69)**
+
+![Gaugram](https://img.shields.io/badge/Gaugram-2024-ff69b4?style=for-the-badge)
+
+</div>
