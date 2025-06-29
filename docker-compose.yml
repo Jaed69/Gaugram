@@ -1,0 +1,39 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Servicio de la base de datos MongoDB
+  mongo:
+    image: mongo:latest # Usa la imagen oficial de MongoDB
+    container_name: mongo_db
+    ports:
+      - "27017:27017" # Mapea el puerto para acceso externo (opcional)
+    volumes:
+      - mongo-data:/data/db # Persiste los datos de la base de datos
+
+  # Servicio del Backend (API)
+  api:
+    build: ./api # Construye la imagen desde la carpeta 'api'
+    container_name: node_api
+    ports:
+      - "3000:3000" # Mapea el puerto de la API al host
+    environment:
+      # La API se conectará al servicio 'mongo' en el puerto 27017
+      - MONGO_URI=mongodb://mongo:27017/socialdb
+    depends_on:
+      - mongo # No inicies la API hasta que el servicio de mongo esté listo
+    volumes:
+        - ./api/src:/usr/src/app/src # Sincroniza el código para desarrollo en vivo
+
+  # Servicio del Frontend
+  frontend:
+    build: ./frontend # Construye la imagen desde la carpeta 'frontend'
+    container_name: angular_app
+    ports:
+      - "4200:80" # Mapea el puerto 80 (Nginx) al 4200 de tu máquina
+    depends_on:
+      - api # No inicies el frontend hasta que la API esté lista
+
+# Define un volumen nombrado para persistir los datos de MongoDB
+volumes:
+  mongo-data:

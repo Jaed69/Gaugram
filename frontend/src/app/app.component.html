@@ -1,0 +1,31 @@
+<!-- frontend/src/app/app.component.html -->
+<div class="container">
+    <header>
+      <h1>Mi Red Social</h1>
+    </header>
+  
+    <main>
+      <div class="post-form">
+        <textarea 
+          [(ngModel)]="newPostContent" 
+          placeholder="¿Qué estás pensando?"></textarea>
+        <button (click)="submitPost()">Publicar</button>
+      </div>
+  
+      <div class="post-feed">
+        <h2>Últimas Publicaciones</h2>
+        <div *ngIf="posts.length === 0" class="no-posts">
+          Aún no hay publicaciones. ¡Sé el primero!
+        </div>
+        <div *ngFor="let post of posts" class="post-card">
+          <p class="post-content">{{ post.content }}</p>
+          <div class="post-meta">
+            <span>Por: {{ post.author }}</span>
+            <span>{{ post.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  
