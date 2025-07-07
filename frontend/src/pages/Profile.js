@@ -25,15 +25,6 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useState(user);
   const [loading, setLoading] = useState(true);
 
-  console.log('Profile render:', { 
-    user: !!user, 
-    isAuthenticated, 
-    token: !!token, 
-    authLoading, 
-    profileLoading: loading,
-    userId: user?._id 
-  });
-
   // Función para obtener datos actualizados del usuario
   const fetchUserProfile = async () => {
     if (!token) {
@@ -42,7 +33,6 @@ const Profile = () => {
     }
     
     try {
-      console.log('Fetching user profile...');
       const response = await fetch('/api/auth/me', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -51,7 +41,6 @@ const Profile = () => {
       
       if (response.ok) {
         const userData = await response.json();
-        console.log('Profile data received:', userData);
         setCurrentUser(userData);
         
         // Actualizar localStorage para sincronizar

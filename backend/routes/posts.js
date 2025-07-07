@@ -37,37 +37,19 @@ router.get('/user/:userId', async (req, res) => {
     const limit = parseInt(req.query.limit) || 12;
     const skip = (page - 1) * limit;
 
-    console.log('=== GET POSTS BY USER ===');
-    console.log('User ID:', userId);
-    console.log('Page:', page, 'Limit:', limit, 'Skip:', skip);
-
     // Verificar si el userId es válido
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      console.log('Invalid userId format:', userId);
       return res.status(400).json({ error: 'Invalid user ID format' });
     }
 
-    // Buscar posts con logging detallado
-    console.log('Searching for posts with query:', { userId, isActive: true });
-    
+    // Buscar posts
     const posts = await Post.find({ userId, isActive: true })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate('userId', 'username fullName profileImage isVerified');
 
-    console.log('Found posts:', posts.length);
-    console.log('Posts data:', posts.map(p => ({ 
-      id: p._id, 
-      content: p.content?.substring(0, 50) + '...', 
-      caption: p.caption?.substring(0, 50) + '...',
-      imageUrl: !!p.imageUrl,
-      createdAt: p.createdAt,
-      userId: p.userId?._id,
-      username: p.userId?.username 
-    })));
-
-    // Enviar respuesta con logging
+    // Enviar respuesta
     const response = posts.map(p => ({
       _id: p._id,
       imageUrl: p.imageUrl,
@@ -81,7 +63,6 @@ router.get('/user/:userId', async (req, res) => {
       userId: p.userId
     }));
 
-    console.log('Sending response:', response.length, 'posts');
     res.json(response);
   } catch (error) {
     console.error('Get user posts error:', error);
@@ -218,7 +199,6 @@ router.post('/', authMiddleware, [
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
