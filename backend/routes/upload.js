@@ -15,10 +15,12 @@ router.post('/post', auth, upload.single('image'), processPostImage, async (req,
       return res.status(400).json({ error: 'No se procesó la imagen correctamente' });
     }
 
-    // Crear el post con la imagen
+    // Crear el post con la imagen almacenada en Base64
     const post = new Post({
       userId,
-      imageUrl: req.processedImage.url,
+      imageData: req.processedImage.data,
+      imageType: req.processedImage.type,
+      imageName: req.processedImage.name,
       caption: caption || '',
       location: location || ''
     });
@@ -51,16 +53,20 @@ router.post('/profile', auth, upload.single('profileImage'), processProfileImage
       return res.status(400).json({ error: 'No se subió ninguna imagen' });
     }
 
-    // Actualizar la imagen de perfil del usuario
+    // Actualizar la imagen de perfil del usuario con datos Base64
     const user = await User.findByIdAndUpdate(
       userId,
-      { profileImage: req.processedImage.url },
+      { 
+        profileImageData: req.processedImage.data,
+        profileImageType: req.processedImage.type,
+        profileImageName: req.processedImage.name
+      },
       { new: true, select: '-password' }
     );
 
     res.json({
       message: 'Imagen de perfil actualizada',
-      profileImage: req.processedImage.url,
+      profileImage: `data:${req.processedImage.type};base64,${req.processedImage.data}`,
       user
     });
   } catch (error) {
@@ -92,6 +98,58 @@ router.get('/profiles/:filename', (req, res) => {
       res.status(404).json({ error: 'Imagen no encontrada' });
     }
   });
+});
+
+// Servir imagen de post desde la base de datos
+router.get('/post/:postId', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId).select('imageData imageType imageName');
+    
+    if (!post || !post.imageData) {
+      return res.status(404).json({ error: 'Imagen no encontrada' });
+    }
+
+    // Convertir Base64 a Buffer
+    const imageBuffer = Buffer.from(post.imageData, 'base64');
+    
+    // Configurar headers
+    res.set({
+      'Content-Type': post.imageType || 'image/jpeg',
+      'Content-Length': imageBuffer.length,
+      'Cache-Control': 'public, max-age=86400' // Cache por 24 horas
+    });
+
+    res.send(imageBuffer);
+  } catch (error) {
+    console.error('Error sirviendo imagen de post:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+// Servir imagen de perfil desde la base de datos
+router.get('/profile/:userId', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select('profileImageData profileImageType profileImageName');
+    
+    if (!user || !user.profileImageData) {
+      return res.status(404).json({ error: 'Imagen no encontrada' });
+    }
+
+    // Convertir Base64 a Buffer
+    const imageBuffer = Buffer.from(user.profileImageData, 'base64');
+    
+    // Configurar headers
+    res.set({
+      'Content-Type': user.profileImageType || 'image/jpeg',
+      'Content-Length': imageBuffer.length,
+      'Cache-Control': 'public, max-age=86400' // Cache por 24 horas
+    });
+
+    res.send(imageBuffer);
+  } catch (error) {
+    console.error('Error sirviendo imagen de perfil:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 });
 
 module.exports = router;

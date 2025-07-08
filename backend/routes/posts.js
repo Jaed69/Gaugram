@@ -15,14 +15,41 @@ router.get('/', async (req, res) => {
     const skip = (page - 1) * limit;
 
     const posts = await Post.find({ isActive: true })
-      .populate('userId', 'username fullName profileImage isVerified')
+      .populate('userId', 'username fullName profileImageData profileImageType isVerified')
       .populate('likes', 'username fullName')
-      .populate('comments.author', 'username fullName profileImage')
+      .populate('comments.author', 'username fullName profileImageData profileImageType')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    res.json(posts);
+    // Generar URLs de imágenes dinámicamente
+    const postsWithImages = posts.map(post => {
+      const postObj = post.toObject();
+      
+      // Generar URL de imagen del post si existe
+      if (post.imageData) {
+        postObj.imageUrl = `/api/upload/post/${post._id}`;
+      }
+      
+      // Generar URL de imagen de perfil del usuario
+      if (post.userId && post.userId.profileImageData) {
+        postObj.userId.profileImage = `/api/upload/profile/${post.userId._id}`;
+      }
+      
+      // Generar URLs de imágenes de perfil en comentarios
+      if (postObj.comments) {
+        postObj.comments = postObj.comments.map(comment => {
+          if (comment.author && comment.author.profileImageData) {
+            comment.author.profileImage = `/api/upload/profile/${comment.author._id}`;
+          }
+          return comment;
+        });
+      }
+      
+      return postObj;
+    });
+
+    res.json(postsWithImages);
   } catch (error) {
     console.error('Get posts error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -47,21 +74,35 @@ router.get('/user/:userId', async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate('userId', 'username fullName profileImage isVerified');
+      .populate('userId', 'username fullName profileImageData profileImageType isVerified');
 
-    // Enviar respuesta
-    const response = posts.map(p => ({
-      _id: p._id,
-      imageUrl: p.imageUrl,
-      content: p.content,
-      caption: p.caption,
-      likesCount: p.likesCount,
-      commentsCount: p.commentsCount,
-      createdAt: p.createdAt,
-      location: p.location,
-      hashtags: p.hashtags,
-      userId: p.userId
-    }));
+    // Enviar respuesta con URLs de imágenes generadas dinámicamente
+    const response = posts.map(p => {
+      const postObj = p.toObject();
+      
+      // Generar URL de imagen del post si existe
+      if (p.imageData) {
+        postObj.imageUrl = `/api/upload/post/${p._id}`;
+      }
+      
+      // Generar URL de imagen de perfil del usuario
+      if (p.userId && p.userId.profileImageData) {
+        postObj.userId.profileImage = `/api/upload/profile/${p.userId._id}`;
+      }
+      
+      return {
+        _id: postObj._id,
+        imageUrl: postObj.imageUrl,
+        content: postObj.content,
+        caption: postObj.caption,
+        likesCount: postObj.likesCount,
+        commentsCount: postObj.commentsCount,
+        createdAt: postObj.createdAt,
+        location: postObj.location,
+        hashtags: postObj.hashtags,
+        userId: postObj.userId
+      };
+    });
 
     res.json(response);
   } catch (error) {
@@ -194,7 +235,9 @@ router.post('/', authMiddleware, [
   body('content').optional().isLength({ min: 0, max: 2200 }).trim(),
   body('caption').optional().isLength({ min: 0, max: 500 }).trim(),
   body('location').optional().isLength({ min: 0, max: 100 }).trim(),
-  body('imageUrl').optional().isURL()
+  body('imageData').optional().isString(),
+  body('imageType').optional().isString(),
+  body('imageName').optional().isString()
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -202,10 +245,10 @@ router.post('/', authMiddleware, [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { content, caption, location, imageUrl } = req.body;
+    const { content, caption, location, imageData, imageType, imageName } = req.body;
 
     // Validar que tenga al menos contenido o imagen
-    if (!imageUrl && !content?.trim() && !caption?.trim()) {
+    if (!imageData && !content?.trim() && !caption?.trim()) {
       return res.status(400).json({ 
         error: 'El post debe tener al menos una imagen, contenido de texto o caption' 
       });
@@ -216,15 +259,26 @@ router.post('/', authMiddleware, [
       content: content || '',
       caption: caption || '',
       location: location || '',
-      imageUrl: imageUrl || null
+      imageData: imageData || null,
+      imageType: imageType || null,
+      imageName: imageName || null
     });
 
     await post.save();
 
     const populatedPost = await Post.findById(post._id)
-      .populate('userId', 'username fullName profileImage isVerified');
+      .populate('userId', 'username fullName profileImageData profileImageType isVerified');
 
-    res.status(201).json({ post: populatedPost });
+    // Generar URLs de imágenes dinámicamente para la respuesta
+    const postResponse = populatedPost.toObject();
+    if (populatedPost.imageData) {
+      postResponse.imageUrl = `/api/upload/post/${populatedPost._id}`;
+    }
+    if (populatedPost.userId && populatedPost.userId.profileImageData) {
+      postResponse.userId.profileImage = `/api/upload/profile/${populatedPost.userId._id}`;
+    }
+
+    res.status(201).json({ post: postResponse });
   } catch (error) {
     console.error('Create post error:', error);
     res.status(500).json({ error: 'Server error' });

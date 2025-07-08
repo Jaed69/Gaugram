@@ -6,6 +6,23 @@ const postSchema = new mongoose.Schema({
     required: true,
     ref: 'User'
   },
+  // Almacenar imagen como datos binarios en Base64
+  imageData: {
+    type: String, // Base64 encoded image data
+    required: false,
+    default: null
+  },
+  imageType: {
+    type: String, // MIME type (image/jpeg, image/png, etc.)
+    required: false,
+    default: null
+  },
+  imageName: {
+    type: String, // Nombre original del archivo
+    required: false,
+    default: null
+  },
+  // Mantener imageUrl para compatibilidad pero será generada dinámicamente
   imageUrl: {
     type: String,
     required: false,

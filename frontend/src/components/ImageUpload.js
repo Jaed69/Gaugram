@@ -3,24 +3,50 @@ import { useDropzone } from 'react-dropzone';
 import { Box, Typography, Paper, Button, CircularProgress } from '@mui/material';
 import { CloudUpload, PhotoCamera } from '@mui/icons-material';
 
+// Función helper para convertir archivo a Base64
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      // Remover el prefijo "data:image/...;base64," para obtener solo el Base64
+      const base64 = reader.result.split(',')[1];
+      resolve({
+        data: base64,
+        type: file.type,
+        name: file.name,
+        size: file.size,
+        fullDataUrl: reader.result // Para preview
+      });
+    };
+    reader.onerror = error => reject(error);
+  });
+};
+
 const ImageUpload = ({ onImageSelect, acceptedFiles = 'image/*', maxSize = 10485760, preview = true }) => {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
-      // Crear preview
-      if (preview) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPreviewUrl(reader.result);
-        };
-        reader.readAsDataURL(file);
+      setUploading(true);
+      try {
+        // Convertir archivo a Base64
+        const base64Data = await fileToBase64(file);
+        
+        // Crear preview
+        if (preview) {
+          setPreviewUrl(base64Data.fullDataUrl);
+        }
+        
+        // Pasar datos Base64 al componente padre
+        onImageSelect(base64Data);
+      } catch (error) {
+        console.error('Error converting file to Base64:', error);
+      } finally {
+        setUploading(false);
       }
-      
-      // Pasar archivo al componente padre
-      onImageSelect(file);
     }
   }, [onImageSelect, preview]);
 

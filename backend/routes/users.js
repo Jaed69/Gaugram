@@ -24,7 +24,13 @@ router.get('/profile', authMiddleware, async (req, res) => {
       // Continuar sin actualizar contadores si hay error
     }
 
-    res.json(user);
+    // Generar URL de imagen de perfil si existe
+    const userResponse = user.toObject();
+    if (user.profileImageData) {
+      userResponse.profileImage = `/api/upload/profile/${user._id}`;
+    }
+
+    res.json(userResponse);
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ error: 'Server error' });

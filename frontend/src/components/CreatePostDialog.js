@@ -77,18 +77,20 @@ const CreatePostDialog = ({ open, onClose, onPostCreated }) => {
       let response;
       
       if (postType === 'image' && selectedImage) {
-        // Post con imagen
-        const formData = new FormData();
-        formData.append('image', selectedImage);
-        formData.append('caption', caption);
-        formData.append('location', location);
-
-        response = await fetch('/api/upload/post', {
+        // Post con imagen usando Base64
+        response = await fetch('/api/posts', {
           method: 'POST',
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: formData
+          body: JSON.stringify({
+            imageData: selectedImage.data,
+            imageType: selectedImage.type,
+            imageName: selectedImage.name,
+            caption: caption,
+            location: location
+          })
         });
       } else {
         // Post solo de texto

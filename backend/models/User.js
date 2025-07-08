@@ -44,6 +44,23 @@ const userSchema = new mongoose.Schema({
     maxlength: 150,
     trim: true
   },
+  // Almacenar imagen de perfil como datos binarios en Base64
+  profileImageData: {
+    type: String, // Base64 encoded image data
+    required: false,
+    default: null
+  },
+  profileImageType: {
+    type: String, // MIME type (image/jpeg, image/png, etc.)
+    required: false,
+    default: null
+  },
+  profileImageName: {
+    type: String, // Nombre original del archivo
+    required: false,
+    default: null
+  },
+  // Mantener profileImage para compatibilidad pero será generada dinámicamente
   profileImage: {
     type: String,
     default: 'https://via.placeholder.com/300x300?text=Profile'
