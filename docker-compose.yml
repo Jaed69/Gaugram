@@ -26,13 +26,13 @@ services:
     container_name: social_backend
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "8081:3001"
     environment:
       - NODE_ENV=development
       - PORT=3001
       - MONGODB_URI=mongodb://mongo:27017/socialnetwork
       - JWT_SECRET=your-secret-key-here
-      - CORS_ORIGIN=http://localhost:3000
+      - CORS_ORIGIN=http://localhost:8080
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -55,9 +55,9 @@ services:
     container_name: social_frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "8080:3000"
     environment:
-      - REACT_APP_API_URL=http://localhost:3001
+      - REACT_APP_API_URL=http://localhost:8081
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./frontend:/app
